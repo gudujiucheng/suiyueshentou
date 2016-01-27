@@ -1,7 +1,6 @@
 package com.example.liumangdulituan.activitys;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.liumangdulituan.R;
+import com.example.liumangdulituan.utils.UpdateTask;
 
 
 public class SettingsActivity extends PreferenceActivity {
@@ -26,8 +26,7 @@ public class SettingsActivity extends PreferenceActivity {
         Preference updatePref = findPreference("pref_etc_check_update");
         updatePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(SettingsActivity.this, "暂不稳定，下一版本添加",1).show();
-//                new UpdateTask(getApplicationContext(), true).update();
+                new UpdateTask(getApplicationContext(), true).update();
                 return false;
             }
         });

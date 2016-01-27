@@ -109,6 +109,13 @@ public final class R {
         public static final int preference=0x7f090011;
         public static final int qq_set=0x7f090003;
         public static final int service_status=0x7f090001;
+        public static final int update_already_latest=0x7f090016;
+        public static final int update_error=0x7f090012;
+        /** 更新字段 
+         */
+        public static final int update_new_seg1=0x7f090013;
+        public static final int update_new_seg2=0x7f090014;
+        public static final int update_new_seg3=0x7f090015;
         public static final int wechat_better_luck_ch=0x7f090007;
         public static final int wechat_better_luck_en=0x7f090005;
         public static final int wechat_default_text_ch=0x7f09000d;

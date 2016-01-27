@@ -99,11 +99,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="2:需要保持屏幕亮着,休眠息屏状态是没用的,程序提供两个保持屏幕常亮的方法,可供选用" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="3:不要禁止通知栏,本程序没有实现自动更新,有更新的话,是通过发通知告诉大家。" />
     </LinearLayout>
 
 </ScrollView>

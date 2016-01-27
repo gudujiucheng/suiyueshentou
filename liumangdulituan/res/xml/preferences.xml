@@ -15,19 +15,19 @@
             android:key="pref_watch_notification"
             android:layout="@layout/preference_checkbox"
             android:summary="读取微信新消息通知中的红包"
-            android:title="监视系统通知" />
+            android:title="微信监视系统通知" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_watch_list"
             android:layout="@layout/preference_checkbox"
             android:summary="读取微信聊天列表中的红包"
-            android:title="监视聊天列表" />
+            android:title="微信监视聊天列表" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_watch_chat"
             android:layout="@layout/preference_checkbox"
             android:summary="读取当前聊天中的红包,拆开红包需要开启该选项"
-            android:title="监视当前聊天页面" />
+            android:title="微信监视当前聊天页面" />
     </PreferenceCategory>
     <PreferenceCategory
         android:layout="@layout/preference_category"
@@ -43,12 +43,12 @@
         <Preference
             android:key="pref_etc_check_update"
             android:layout="@layout/preference_checkbox"
-            android:summary="敬请期待"
+            android:summary="如发现新版本，会启动浏览器自动下载，下载完成后，覆盖安装即可！"
             android:title="检查新版本" />
         <Preference
             android:key="pref_etc_issue"
             android:layout="@layout/preference_checkbox"
-            android:summary="敬请期待"
+            android:summary="有问题请暂时加QQ群咨询：361328388"
             android:title="帮助与反馈" />
     </PreferenceCategory>
 

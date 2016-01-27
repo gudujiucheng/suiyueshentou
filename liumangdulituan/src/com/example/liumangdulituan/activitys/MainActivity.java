@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
@@ -21,12 +22,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.liumangdulituan.R;
+import com.example.liumangdulituan.utils.UpdateTask;
 import com.tencent.android.tpush.XGPushManager;
 
 public class MainActivity extends Activity {
     private final Intent mAccessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
     private Button switchPlugin;
+
     private Button WXswitchPlugin;
 
     private PowerManager powerManager;
@@ -65,6 +68,17 @@ public class MainActivity extends Activity {
 
         handleMIUIStatusBar();
         updateServiceStatus();
+        explicitlyLoadPreferences();
+    }
+    
+    
+    /**
+     * 
+     * @Description 初始化默认配置
+     * @author zhangcan
+     */
+    private void explicitlyLoadPreferences() {
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     /**
@@ -91,6 +105,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        new UpdateTask(this, false).update();//检查是否有更新
         updateServiceStatus();
     }
 
@@ -112,7 +127,7 @@ public class MainActivity extends Activity {
         List<AccessibilityServiceInfo> accessibilityServices = accessibilityManager
                 .getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
         for (AccessibilityServiceInfo info : accessibilityServices) {
-            if (info.getId().equals(getPackageName() + "/.services.MQQService")) {//状态注意包名
+            if (info.getId().equals(getPackageName() + "/.services.MQQService")) {// 状态注意包名
                 serviceEnabled = true;
             }
             if (info.getId().equals(getPackageName() + "/.services.MWXService")) {
@@ -184,11 +199,11 @@ public class MainActivity extends Activity {
     public void openMSGList(View v) {
         startActivity(new Intent(this, MSGListActivity.class));
     }
-    
-    public void openHelp(View v){
+
+    public void openHelp(View v) {
         startActivity(new Intent(this, MyHelpActivity.class));
     }
-    
+
     public void openSettings(View view) {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
