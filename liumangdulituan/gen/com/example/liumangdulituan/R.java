@@ -52,41 +52,34 @@ public final class R {
         public static final int step_e=0x7f02000a;
     }
     public static final class id {
-        public static final int action_settings=0x7f0c0022;
-        public static final int activityContent=0x7f0c0017;
-        public static final int activityType=0x7f0c0016;
-        public static final int arrow=0x7f0c0010;
+        public static final int action_settings=0x7f0c001b;
         public static final int button_01=0x7f0c000b;
         public static final int button_02=0x7f0c000c;
         public static final int button_accessible=0x7f0c0009;
         public static final int button_accessible_wx=0x7f0c0008;
-        public static final int content=0x7f0c0019;
+        public static final int content=0x7f0c0012;
         public static final int github=0x7f0c0006;
         public static final int imageView=0x7f0c0002;
         public static final int imageView2=0x7f0c0001;
-        public static final int imageView3=0x7f0c001d;
-        public static final int img=0x7f0c0011;
+        public static final int imageView3=0x7f0c0016;
         public static final int ll_01=0x7f0c000a;
         public static final int ll_02=0x7f0c0005;
         public static final int ll_accessible=0x7f0c0007;
-        public static final int msginfoLine1=0x7f0c0014;
-        public static final int msginfoLine2=0x7f0c0018;
+        public static final int msginfoLine2=0x7f0c0011;
         public static final int nodata=0x7f0c000e;
-        public static final int preference_action_bar_placeholder=0x7f0c001a;
-        public static final int preference_back=0x7f0c001c;
-        public static final int push_content=0x7f0c0021;
+        public static final int preference_action_bar_placeholder=0x7f0c0013;
+        public static final int preference_back=0x7f0c0015;
+        public static final int push_content=0x7f0c001a;
         public static final int push_list=0x7f0c000d;
-        public static final int push_msg_id=0x7f0c001e;
-        public static final int push_time=0x7f0c0020;
-        public static final int push_title=0x7f0c001f;
-        public static final int rl_title=0x7f0c000f;
-        public static final int settings_bar=0x7f0c001b;
+        public static final int push_msg_id=0x7f0c0017;
+        public static final int push_time=0x7f0c0019;
+        public static final int push_title=0x7f0c0018;
+        public static final int settings_bar=0x7f0c0014;
         public static final int textView=0x7f0c0000;
         public static final int textView2=0x7f0c0004;
         public static final int textView3=0x7f0c0003;
-        public static final int title=0x7f0c0013;
-        public static final int title_id=0x7f0c0012;
-        public static final int update_time=0x7f0c0015;
+        public static final int title=0x7f0c000f;
+        public static final int update_time=0x7f0c0010;
     }
     public static final class layout {
         public static final int activity_help=0x7f040000;
