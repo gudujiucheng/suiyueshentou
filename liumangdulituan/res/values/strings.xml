@@ -1,0 +1,22 @@
+<resources>
+
+    <string name="app_name">唯快不破</string>
+    <string name="service_status">当前辅助服务状态:</string>
+    <string name="wx_set">微信插件</string>
+     <string name="qq_set">QQ插件</string>
+    <string name="wechat_details_en">Details</string>
+    <string name="wechat_better_luck_en">Better luck next time!</string>
+    <string name="wechat_details_ch">红包详情</string>
+    <string name="wechat_better_luck_ch">手慢了</string>
+    <string name="wechat_open_en">Open</string>
+    <string name="wechat_opened_en">opened</string>
+    <string name="wechat_open_ch">拆红包</string>
+    <string name="wechat_view_self_ch">查看红包</string>
+    <string name="wechat_view_others_ch">领取红包</string>
+    <string name="wechat_default_text_ch">恭喜发财,大吉大利!</string>
+    <string name="wechat_default_text_en">Best wishes!</string>
+    <string name="mtips">屏幕常亮在有些机型不好用，可以来回实验如下方法哪一个更适用，都不适用的话，开启系统自带的屏幕常亮吧</string>
+    <string name="clear_msg">清空消息列表!</string>
+    <string name="preference">微信设置</string>
+
+</resources>
