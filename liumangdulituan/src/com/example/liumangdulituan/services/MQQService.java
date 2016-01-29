@@ -8,9 +8,12 @@ import com.example.liumangdulituan.utils.DrawerToast;
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +45,8 @@ public class MQQService extends AccessibilityService {
 
     private static final String BACK_TEXT_03 = "已存入余额";
 
+    private static final String QQ_NOTIFICATION_TIP = "[QQ红包]";
+
     private static final int MAX_CACHE_TOLERANCE = 5000;
 
     private long mLogtime;
@@ -51,7 +56,10 @@ public class MQQService extends AccessibilityService {
     private String lastFetchedHongbaoId;// 最后一个
 
     private long lastFetchedTime;// 最后时间
-    
+
+    private long getKLTime;
+
+    private long getYQTime;
 
     /**
      * AccessibilityEvent的回调方法
@@ -67,12 +75,14 @@ public class MQQService extends AccessibilityService {
         this.rootNodeInfo = getRootInActiveWindow();
         if (rootNodeInfo == null)
             return;
+
         /** ------------------yunqichai------------------------- */
         List<AccessibilityNodeInfo> nodes1 = rootNodeInfo.findAccessibilityNodeInfosByText(WECHAT_VIEW_OTHERS_CH);
         for (AccessibilityNodeInfo accessibilityNodeInfo : nodes1) {
-
-            accessibilityNodeInfo.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
-
+            if (System.currentTimeMillis() - getYQTime > 200) {// 加个0.2秒限制防止频繁点击
+                accessibilityNodeInfo.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                getYQTime = System.currentTimeMillis();
+            }
         }
 
         /** -----------------koulingchai-------------------------- */
@@ -90,7 +100,11 @@ public class MQQService extends AccessibilityService {
                         if (nodetext != null) {
                             String text = nodetext.toString();
                             if (!text.contains("已拆开")) {
-                                parent.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                                if (System.currentTimeMillis() - getKLTime > 200) {// 加个0.2秒限制防止频繁点击
+                                    parent.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                                    getKLTime = System.currentTimeMillis();
+                                }
+
                             }
                         }
                     }
@@ -144,6 +158,10 @@ public class MQQService extends AccessibilityService {
             }
         }
 
+        /** ------------------tongzhi------------------------- */
+        if (watchNotifications(event))
+            return;
+        /** ------------------back------------------------- */
         List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[] {
                 BACK_TEXT_01, BACK_TEXT_02, BACK_TEXT_03 });
         if (!nodes3.isEmpty()) {
@@ -193,8 +211,9 @@ public class MQQService extends AccessibilityService {
         mLogtime = System.currentTimeMillis();
 
     }
-    
+
     private String textContent = "";
+
     /**
      * 将节点对象的id和hb上的内容合并 用于表示一个唯一的hb
      */
@@ -202,20 +221,20 @@ public class MQQService extends AccessibilityService {
         /* 获取hb上的文本 */
         textContent = "";
         try {
-            getTextView(node);        
+            getTextView(node);
         } catch (NullPointerException npe) {
             Log.i("MyError", "异常null");
             return null;
         }
         return textContent;
     }
-    
-  /**
-   * 
-   * @Description 遍历累加textview的值 作为标记
-   * @author zhangcan
-   * @param node
-   */
+
+    /**
+     * 
+     * @Description 遍历累加textview的值 作为标记
+     * @author zhangcan
+     * @param node
+     */
     public void getTextView(AccessibilityNodeInfo node) {
 
         for (int i = 0; i < node.getChildCount(); i++) {
@@ -227,11 +246,33 @@ public class MQQService extends AccessibilityService {
                 getTextView(subView);
             } else {
                 if (subView.getClassName().equals("android.widget.TextView")) {
-                    textContent+=subView.getText().toString();
+                    textContent += subView.getText().toString();
                 }
-                
+
             }
         }
+    }
+
+    private boolean watchNotifications(AccessibilityEvent event) {
+        // Not a notification
+        if (event.getEventType() != AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED)
+            return false;
+
+        // Not a hongbao
+        String tip = event.getText().toString();
+        if (!tip.contains(QQ_NOTIFICATION_TIP))
+            return true;
+
+        Parcelable parcelable = event.getParcelableData();
+        if (parcelable instanceof Notification) {
+            Notification notification = (Notification) parcelable;
+            try {
+                notification.contentIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 
 }
