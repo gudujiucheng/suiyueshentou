@@ -9,7 +9,7 @@
 
     <PreferenceCategory
         android:layout="@layout/preference_category"
-        android:title="监视选项" >
+        android:title="微信监视选项" >
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_watch_notification"
