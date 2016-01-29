@@ -12,9 +12,12 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MQQService extends AccessibilityService {
@@ -33,6 +36,12 @@ public class MQQService extends AccessibilityService {
 
     private static final String FS_WECHAT_VIEW_OTHERS_CH = "发送";
 
+    private static final String BACK_TEXT_01 = "红包记录";
+
+    private static final String BACK_TEXT_02 = "来晚一步，红包被领完了";
+
+    private static final String BACK_TEXT_03 = "已存入余额";
+
     private static final int MAX_CACHE_TOLERANCE = 5000;
 
     private long mLogtime;
@@ -42,6 +51,7 @@ public class MQQService extends AccessibilityService {
     private String lastFetchedHongbaoId;// 最后一个
 
     private long lastFetchedTime;// 最后时间
+    
 
     /**
      * AccessibilityEvent的回调方法
@@ -112,7 +122,8 @@ public class MQQService extends AccessibilityService {
                 String hbid = getHBText(accessibilityNodeInfo);
                 AccessibilityNodeInfo parent = accessibilityNodeInfo.getParent();
                 long now = System.currentTimeMillis();
-                if ((hbid != null && !hbid.equals(lastFetchedHongbaoId)) || (now - lastFetchedTime) > MAX_CACHE_TOLERANCE) {
+                if ((hbid != null && !hbid.equals(lastFetchedHongbaoId))
+                        || (now - lastFetchedTime) > MAX_CACHE_TOLERANCE) {
                     if (parent != null) {
                         if (parent.getClassName().equals("android.widget.RelativeLayout")
                                 && accessibilityNodeInfo.getClassName().equals("android.widget.TextView")) {
@@ -134,17 +145,18 @@ public class MQQService extends AccessibilityService {
         }
 
         List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[] {
-                "红包记录", "来晚一步，红包被领完了", "已存入余额" });
+                BACK_TEXT_01, BACK_TEXT_02, BACK_TEXT_03 });
         if (!nodes3.isEmpty()) {
             mNeedBack = true;
         }
 
         if (mNeedBack) {
-            performGlobalAction(GLOBAL_ACTION_BACK);
             mNeedBack = false;
+            performGlobalAction(GLOBAL_ACTION_BACK);
+
         }
 
-        showToast("实时监控中...");
+        showToast("QQ实时监控中...");
 
     }
 
@@ -181,26 +193,45 @@ public class MQQService extends AccessibilityService {
         mLogtime = System.currentTimeMillis();
 
     }
-
+    
+    private String textContent = "";
     /**
      * 将节点对象的id和hb上的内容合并 用于表示一个唯一的hb
      */
-    private String getHBText(AccessibilityNodeInfo node) {
+    private synchronized String getHBText(AccessibilityNodeInfo node) {
         /* 获取hb上的文本 */
-        String content = null;
+        textContent = "";
         try {
-            AccessibilityNodeInfo i = node.getParent();
-            for (int j = 0; j < i.getChildCount(); j++) {
-                Log.i("MyError", "content");
-                content += i.getChild(j).getText().toString();
-            }
-            Log.i("MyError", content);
+            getTextView(node);        
         } catch (NullPointerException npe) {
             Log.i("MyError", "异常null");
             return null;
         }
+        return textContent;
+    }
+    
+  /**
+   * 
+   * @Description 遍历累加textview的值 作为标记
+   * @author zhangcan
+   * @param node
+   */
+    public void getTextView(AccessibilityNodeInfo node) {
 
-        return content;
+        for (int i = 0; i < node.getChildCount(); i++) {
+            // 获得该布局的所有子布局
+            AccessibilityNodeInfo subView = node.getChild(i);
+            // 判断子布局属性，如果还是ViewGroup类型，递归回收
+            if (subView.getClassName().equals("android.widget.RelativeLayout")) {
+                // 递归
+                getTextView(subView);
+            } else {
+                if (subView.getClassName().equals("android.widget.TextView")) {
+                    textContent+=subView.getText().toString();
+                }
+                
+            }
+        }
     }
 
 }

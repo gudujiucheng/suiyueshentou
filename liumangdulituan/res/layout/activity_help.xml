@@ -93,7 +93,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="1:本小程序必须在群聊天界面使用,也就是必须要打开对应的群聊天界面才能自动抢" />
+            android:text="1:本小程序默认在群聊天界面使用,如需别的功能请打开设置主动设置下" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

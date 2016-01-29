@@ -56,6 +56,7 @@
         android:layout_marginTop="3dp"
         android:clickable="true"
         android:padding="10dp"
+        android:textColor="@color/gray"
         android:text="@string/mtips"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -99,7 +100,8 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="绿色是开启状态,黄色是关闭状态" />
+            android:textColor="@color/gray"
+            android:text="状态显示" />
 
         <Button
             android:id="@+id/button_accessible"

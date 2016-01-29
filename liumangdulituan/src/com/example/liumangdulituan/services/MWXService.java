@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import com.example.liumangdulituan.utils.DrawerToast;
 import com.example.liumangdulituan.utils.HongbaoSignature;
 
 public class MWXService extends AccessibilityService {
@@ -105,6 +106,8 @@ public class MWXService extends AccessibilityService {
             mMutex = false;
             mNeedBack = false;
         }
+        
+        showToast("微信实时监控中...");
     }
 
     private boolean watchList(AccessibilityEvent event) {
@@ -258,5 +261,22 @@ public class MWXService extends AccessibilityService {
         for (String flag : flagsList) {
             watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
         }
+    }
+    
+    private DrawerToast toast;
+
+    private long mLogtime;
+
+    public void showToast(final String s) {
+
+        if ((System.currentTimeMillis() - mLogtime) < 1000) {// 禁止频繁输出监控日志
+            return;
+        }
+
+        toast = DrawerToast.getInstance(getApplicationContext());
+
+        toast.show(s);
+        mLogtime = System.currentTimeMillis();
+
     }
 }
