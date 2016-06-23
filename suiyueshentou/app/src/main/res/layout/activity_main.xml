@@ -1,0 +1,183 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:background="@mipmap/bg_action_bar"
+        android:gravity="bottom|center_horizontal"
+        android:paddingBottom="12dp"
+        android:text="生活处处是惊喜"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#fff" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignRight="@+id/textView"
+        android:layout_marginRight="6dp"
+        android:onClick="openSettings"
+        android:padding="10dp"
+        android:src="@mipmap/ic_settings" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:onClick="openMSGList"
+        android:scaleType="centerInside"
+        android:src="@mipmap/github" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="openMSGList"
+        android:text="消息列表"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#2196f3" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_02"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:clickable="true"
+        android:padding="10dp"
+        android:textColor="@color/gray"
+        android:text="@string/mtips"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/github"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:onClick="openHelp"
+        android:text="不会用?点击这里,查看帮助!"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#2196f3"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/ll_accessible"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/github"
+        android:layout_margin="21dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button_accessible_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@drawable/btn_orange"
+            android:onClick="onButtonClicked"
+            android:padding="10dp"
+            android:text="@string/wx_set"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/gray"
+            android:text="状态显示" />
+
+        <Button
+            android:id="@+id/button_accessible"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@drawable/btn_orange"
+            android:onClick="onButtonClicked"
+            android:padding="10dp"
+            android:text="@string/qq_set"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_accessible"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_orange"
+            android:onClick="keepOn02"
+            android:text="开启屏幕常亮方法2"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_orange"
+            android:onClick="close02"
+            android:padding="10dp"
+            android:text="关闭屏幕常亮方法2"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_02"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_01"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_orange"
+            android:onClick="keepOn01"
+            android:text="开启屏幕常亮方法1"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_orange"
+            android:onClick="close01"
+            android:padding="10dp"
+            android:text="关闭屏幕常亮1"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</RelativeLayout>
