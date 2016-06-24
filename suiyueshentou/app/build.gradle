@@ -35,9 +35,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    compile files('libs/android-support-v4.jar')
-    compile files('libs/jg_filter_sdk_1.1.jar')
-    compile files('libs/wup-1.0.0.E-SNAPSHOT.jar')
-    compile files('libs/Xg_sdk_v2.45_20160510_1845.jar')
     compile 'com.zhy:okhttputils:2.6.2'
+    compile project(':PushSDK')
 }

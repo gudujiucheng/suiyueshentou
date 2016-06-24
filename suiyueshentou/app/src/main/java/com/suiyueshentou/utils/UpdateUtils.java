@@ -8,6 +8,7 @@ import android.os.Debug;
 import android.widget.Toast;
 
 import com.suiyueshentou.R;
+import com.suiyueshentou.base.BaseActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -33,10 +34,12 @@ public class UpdateUtils {
 
     /**
      * 检查更新
-     * @param context   上下文
+     *
+     * @param context           上下文
      * @param isUpdateOnRelease 只是提示，还是走更新逻辑   true ：走更新逻辑   false：仅仅提示
      */
-    public void requestUpdate(final Context context,final boolean isUpdateOnRelease) {
+    public void requestUpdate(final Context context, final boolean isUpdateOnRelease) {
+        ((BaseActivity) context).showLoadingDialog();
         OkHttpUtils
                 .get()
                 .url(updateUrl)
@@ -44,6 +47,7 @@ public class UpdateUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onResponse(String response, int id) {
+                        ((BaseActivity) context).dismissLoadingDialog();
                         DebugLog.e(DebugLog.TAG, response);
                         try {
                             JSONObject release = new JSONObject(response);
@@ -89,6 +93,7 @@ public class UpdateUtils {
 
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        ((BaseActivity) context).dismissLoadingDialog();
                         e.printStackTrace();
                     }
                 });

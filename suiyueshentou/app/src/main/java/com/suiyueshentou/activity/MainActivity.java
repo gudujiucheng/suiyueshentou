@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,16 +17,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.suiyueshentou.R;
+import com.suiyueshentou.base.BaseActivity;
+import com.suiyueshentou.utils.DebugLog;
 import com.suiyueshentou.utils.UpdateUtils;
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
-import com.tencent.android.tpush.XGPushManager;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private final Intent mAccessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
@@ -44,54 +44,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 开启logcat输出，方便debug，发布时请关闭
-//         XGPushConfig.enableDebug(this, true);
-        // 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(),
-        // XGIOperateCallback)带callback版本
-        // 如果需要绑定账号，请使用registerPush(getApplicationContext(),account)版本
-        // 具体可参考详细的开发指南
-        // 传递的参数为ApplicationContext
-        Context context = getApplicationContext();
-        XGPushManager.registerPush(context);
-
-        // 2.36（不包括）之前的版本需要调用以下2行代码
-        // Intent service = new Intent(context, XGPushService.class);
-        // context.startService(service);
-
-        // 其它常用的API：
-        // 绑定账号（别名）注册：registerPush(context,account)或registerPush(context,account,
-        // XGIOperateCallback)，其中account为APP账号，可以为任意字符串（qq、openid或任意第三方），业务方一定要注意终端与后台保持一致。
-        // 取消绑定账号（别名）：registerPush(context,"*")，即account="*"为取消绑定，解绑后，该针对该账号的推送将失效
-        // 反注册（不再接收消息）：unregisterPush(context)
-        // 设置标签：setTag(context, tagName)
-        // 删除标签：deleteTag(context, tagName)
-
-        XGPushConfig.enableDebug(this, true);
-        XGPushManager.registerPush(getApplicationContext(), new XGIOperateCallback() {
-            @Override
-            public void onSuccess(Object o, int code) {
-                Log.e("DebugLog", " 信鸽注册成功！设备token ===> " + o + " ,resultCode ===> " + code);
-
-            }
-
-            @Override
-            public void onFail(Object o, int code, String msg) {
-                Log.e("DebugLog", " 信鸽注册失败！msg ===> " + msg + " ,errorCode ===> " + code);
-
-            }
-        });
-
         switchPlugin = (Button) findViewById(R.id.button_accessible);
         WXswitchPlugin = (Button) findViewById(R.id.button_accessible_wx);
 
         handleMIUIStatusBar();
         updateServiceStatus();
         explicitlyLoadPreferences();
+
+
+        //友盟
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        mPushAgent.enable();
+
+        //开启推送并设置注册的回调处理
+        mPushAgent.enable(new IUmengRegisterCallback() {
+            @Override
+            public void onRegistered(final String registrationId) {
+                //handler.post(r)。r是要执行的任务代码。意思就是说r的代码实际是在UI线程执行的。可以写更新UI的代码。
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //onRegistered方法的参数registrationId即是device_token
+                        DebugLog.e(DebugLog.TAG, "友盟推送 device_token:" + registrationId);
+                    }
+                });
+            }
+        });
     }
 
 
     /**
-     *
      * @Description 初始化默认配置
      * @author zhangcan
      */
@@ -123,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        UpdateUtils.getInstance().requestUpdate(this,false);//检查是否有更新
+        UpdateUtils.getInstance().requestUpdate(this, false);//检查是否有更新
         updateServiceStatus();
     }
 
@@ -133,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @Description 检查服务状态
      * @author zhangcan
      */
@@ -209,13 +190,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * @param v
      * @Description 打开消息列表
      * @author zhangcan
-     * @param v
      */
     public void openMSGList(View v) {
-        startActivity(new Intent(this, MSGListActivity.class));
+//        startActivity(new Intent(this, MSGListActivity.class));
     }
 
     public void openHelp(View v) {
