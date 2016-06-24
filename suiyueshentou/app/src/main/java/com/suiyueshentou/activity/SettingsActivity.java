@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.suiyueshentou.R;
-import com.suiyueshentou.utils.UpdateTask;
+import com.suiyueshentou.utils.UpdateUtils;
 
 
 public class SettingsActivity extends PreferenceActivity {
@@ -26,7 +26,7 @@ public class SettingsActivity extends PreferenceActivity {
         Preference updatePref = findPreference("pref_etc_check_update");
         updatePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                new UpdateTask(getApplicationContext(), true).update();
+                UpdateUtils.getInstance().requestUpdate(SettingsActivity.this,true);//检查是否有更新
                 return false;
             }
         });

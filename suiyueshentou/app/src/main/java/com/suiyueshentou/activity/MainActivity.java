@@ -4,11 +4,11 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.suiyueshentou.R;
-import com.suiyueshentou.utils.UpdateTask;
+import com.suiyueshentou.utils.UpdateUtils;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new UpdateTask(this, false).update();//检查是否有更新
+        UpdateUtils.getInstance().requestUpdate(this,false);//检查是否有更新
         updateServiceStatus();
     }
 
