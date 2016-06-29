@@ -18,27 +18,27 @@ import java.util.Map;
 public class CustomNotificationHandler extends UmengNotificationClickHandler {
 
     @Override
-    public void dismissNotification(Context context, UMessage msg) {
+    public void dismissNotification(Context context, UMessage msg) {//移除
         super.dismissNotification(context, msg);
     }
 
     @Override
-    public void launchApp(Context context, UMessage msg) {
+    public void launchApp(Context context, UMessage msg) {//启动app
         super.launchApp(context, msg);
     }
 
     @Override
-    public void openActivity(Context context, UMessage msg) {
+    public void openActivity(Context context, UMessage msg) {//打开指定界面
         super.openActivity(context, msg);
     }
 
     @Override
-    public void openUrl(Context context, UMessage msg) {
+    public void openUrl(Context context, UMessage msg) {//打开Url
         super.openUrl(context, msg);
     }
 
     @Override
-    public void dealWithCustomAction(Context context, UMessage msg) {
+    public void dealWithCustomAction(Context context, UMessage msg) {//自定义
         super.dealWithCustomAction(context, msg);
 
         for (Map.Entry<String, String> entry : msg.extra.entrySet()) {
@@ -50,7 +50,7 @@ public class CustomNotificationHandler extends UmengNotificationClickHandler {
     }
 
     @Override
-    public void autoUpdate(Context context, UMessage msg) {
+    public void autoUpdate(Context context, UMessage msg) {//更新
         super.autoUpdate(context, msg);
     }
 

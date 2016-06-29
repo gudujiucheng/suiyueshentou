@@ -18,14 +18,21 @@ import android.widget.Toast;
 
 import com.suiyueshentou.R;
 import com.suiyueshentou.base.BaseActivity;
+import com.suiyueshentou.databasebean.Person;
 import com.suiyueshentou.utils.DebugLog;
 import com.suiyueshentou.utils.UpdateUtils;
+import com.suiyueshentou.utils.Utils;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobConfig;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class MainActivity extends BaseActivity {
 
@@ -43,6 +50,19 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Bomb：自v3.4.7版本开始,设置BmobConfig,允许设置请求超时时间、文件分片上传时每片的大小、文件的过期时间(单位为秒)，
+        BmobConfig config =new BmobConfig.Builder(this)
+        //设置appkey
+        .setApplicationId("9c90bbc7dd6638e88a00da0c9d9f23a7")
+        //请求超时时间（单位为秒）：默认15s
+        .setConnectTimeout(30)
+        //文件分片上传时每片的大小（单位字节），默认512*1024
+        .setUploadBlockSize(1024*1024)
+        //文件的过期时间(单位为秒)：默认1800s
+        .setFileExpiration(2500)
+        .build();
+        Bmob.initialize(config);
 
         switchPlugin = (Button) findViewById(R.id.button_accessible);
         WXswitchPlugin = (Button) findViewById(R.id.button_accessible_wx);
@@ -68,6 +88,22 @@ public class MainActivity extends BaseActivity {
                         DebugLog.e(DebugLog.TAG, "友盟推送 device_token:" + registrationId);
                     }
                 });
+            }
+        });
+
+
+
+        Person p2 = new Person();
+        p2.setName("lucky");
+        p2.setAddress("北京海淀");
+        p2.save(new SaveListener<String>() {
+            @Override
+            public void done(String objectId,BmobException e) {
+                if(e==null){
+                    Utils.showToast(MainActivity.this,"添加数据成功，返回objectId为："+objectId);
+                }else{
+                    Utils.showToast(MainActivity.this,"创建数据失败：" + e.getMessage());
+                }
             }
         });
     }
