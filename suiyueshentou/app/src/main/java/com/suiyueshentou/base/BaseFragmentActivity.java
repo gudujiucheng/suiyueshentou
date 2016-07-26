@@ -1,29 +1,23 @@
 package com.suiyueshentou.base;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.suiyueshentou.common.dialog.LoadingDialog;
 import com.suiyueshentou.utils.AppManager;
 import com.suiyueshentou.utils.DebugLog;
-import com.umeng.message.PushAgent;
 
-/**
- * activity基类
- */
-public class BaseActivity extends Activity implements BaseImpMethod {
 
-    private LoadingDialog mLoadingDialog;
+public class BaseFragmentActivity extends FragmentActivity implements BaseImpMethod {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 添加Activity到堆栈
         AppManager.getAppManager().addActivity(this);
-        //友盟统计应用启动数据
-        PushAgent.getInstance(this).onAppStart();
         initView();
         initData();
     }
@@ -37,19 +31,16 @@ public class BaseActivity extends Activity implements BaseImpMethod {
     @Override
     protected void onStop() {
         super.onStop();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //防止 WindowManager$BadTokenException
-        dismissLoadingDialog();
+
         // 结束Activity&从堆栈中移除
         AppManager.getAppManager().finishActivity(this);
-
     }
-
-
 
     @Override
     public void initView() {
@@ -66,7 +57,6 @@ public class BaseActivity extends Activity implements BaseImpMethod {
         ((TextView) findViewById(resId)).setText(title);
     }
 
-
     @Override
     public void setBack(int backResId) {
         findViewById(backResId).setOnClickListener(new View.OnClickListener() {
@@ -78,6 +68,11 @@ public class BaseActivity extends Activity implements BaseImpMethod {
     }
 
 
+    private LoadingDialog mLoadingDialog;
+
+    /**
+     * 展示加载弹窗
+     */
     public void showLoadingDialog() {
         if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog(this);
@@ -87,6 +82,9 @@ public class BaseActivity extends Activity implements BaseImpMethod {
         }
     }
 
+    /**
+     * 消失加载弹窗
+     */
     public void dismissLoadingDialog() {
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();

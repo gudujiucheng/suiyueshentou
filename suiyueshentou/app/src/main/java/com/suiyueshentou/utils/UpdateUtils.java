@@ -1,5 +1,6 @@
 package com.suiyueshentou.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -7,7 +8,7 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import com.suiyueshentou.R;
-import com.suiyueshentou.base.BaseActivity;
+import com.suiyueshentou.base.BaseFragmentActivity;
 
 import org.json.JSONObject;
 
@@ -43,33 +44,36 @@ public class UpdateUtils {
      * @param isUpdateOnRelease 只是提示，还是走更新逻辑   true ：走更新逻辑   false：仅仅提示
      */
     public void requestUpdate(final Context context, final boolean isUpdateOnRelease) {
-        ((BaseActivity) context).showLoadingDialog();
+        ((BaseFragmentActivity) context).showLoadingDialog();
         //创建okHttpClient对象
         OkHttpClient mOkHttpClient = new OkHttpClient();
-//创建一个Request
+        //创建一个Request
         final Request request = new Request.Builder()
-                .url("https://github.com/hongyangAndroid")
+                .url(updateUrl)
                 .build();
-//new call
+        //new call
         Call call = mOkHttpClient.newCall(request);
-//请求加入调度
+        //请求加入调度
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                ((BaseActivity) context).dismissLoadingDialog();
+                ((BaseFragmentActivity) context).dismissLoadingDialog();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                ((BaseActivity) context).dismissLoadingDialog();
+                ((BaseFragmentActivity) context).dismissLoadingDialog();
                 try {
-                    JSONObject release = new JSONObject(response.body().string());
+                    String resp = response.body().string();
+                    DebugLog.e(DebugLog.TAG, resp);
+                    String s = new String(resp.getBytes(), "UTF-8");
+                    JSONObject release = new JSONObject(s);
 
                     // Get current version
                     PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                     String version = pInfo.versionName;
 
-                    String latestVersion = release.getString("tag_name");
+                    final String latestVersion = release.getString("tag_name");
                     boolean isPreRelease = release.getBoolean("prerelease");
                     if (!isPreRelease && version.compareToIgnoreCase(latestVersion) >= 0) {
                         // Your version is ahead of or same as the latest.
@@ -91,10 +95,13 @@ public class UpdateUtils {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
                         browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(browserIntent);
+
                         Toast.makeText(
                                 context,
                                 context.getString(R.string.update_new_seg1) + latestVersion
                                         + context.getString(R.string.update_new_seg2), Toast.LENGTH_LONG).show();
+
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
