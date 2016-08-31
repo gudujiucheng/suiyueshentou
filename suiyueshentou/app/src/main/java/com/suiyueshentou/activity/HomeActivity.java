@@ -29,7 +29,6 @@ public class HomeActivity extends BaseFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        UpdateUtils.getInstance().requestUpdate(this, false);//检查是否有更新
     }
 
     @Override

@@ -12,6 +12,8 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
+import android.os.StatFs;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -20,6 +22,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -501,5 +504,21 @@ public class Utils {
         drawable.setBounds(0, 0, w, h);
         drawable.draw(canvas);
         return bitmap;
+    }
+
+
+
+    /**
+     * 获取 SD 卡的剩余空间  kb单位
+     */
+    public static long getSDFreeSize() {
+
+        File file = Environment.getExternalStorageDirectory();
+        StatFs statFs = new StatFs(file.getPath());
+
+        long blockSize = statFs.getBlockSize();
+        long freeBlocks = statFs.getAvailableBlocks();
+
+        return blockSize * freeBlocks;    //	单位 KB
     }
 }
