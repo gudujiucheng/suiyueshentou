@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.suiyueshentou.common.dialog.LoadingDialog;
 import com.suiyueshentou.utils.AppManager;
 import com.suiyueshentou.utils.DebugLog;
-import com.umeng.message.PushAgent;
 
 /**
  * activity基类
@@ -22,8 +21,6 @@ public class BaseActivity extends Activity implements BaseImpMethod {
         super.onCreate(savedInstanceState);
         // 添加Activity到堆栈
         AppManager.getAppManager().addActivity(this);
-        //友盟统计应用启动数据
-        PushAgent.getInstance(this).onAppStart();
         initView();
         initData();
     }

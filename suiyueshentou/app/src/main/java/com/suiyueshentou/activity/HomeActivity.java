@@ -15,11 +15,8 @@ import com.suiyueshentou.fragment.StoreFragment;
 import com.suiyueshentou.utils.DebugLog;
 import com.suiyueshentou.utils.UpdateUtils;
 import com.suiyueshentou.view.MenuBarView;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.PushAgent;
 
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobConfig;
+
 
 public class HomeActivity extends BaseFragmentActivity {
     private int showIndex = 0;
@@ -39,38 +36,7 @@ public class HomeActivity extends BaseFragmentActivity {
         menuBarView.setOnMenuItemClickListener(menuListener);
         menuBarView.setCurrentMenuItem(0);
 
-        //Bomb：自v3.4.7版本开始,设置BmobConfig,允许设置请求超时时间、文件分片上传时每片的大小、文件的过期时间(单位为秒)，
-        BmobConfig config = new BmobConfig.Builder(this)
-                //设置appkey
-                .setApplicationId("9c90bbc7dd6638e88a00da0c9d9f23a7")
-                //请求超时时间（单位为秒）：默认15s
-                .setConnectTimeout(30)
-                //文件分片上传时每片的大小（单位字节），默认512*1024
-                .setUploadBlockSize(1024 * 1024)
-                //文件的过期时间(单位为秒)：默认1800s
-                .setFileExpiration(2500)
-                .build();
-        Bmob.initialize(config);
 
-
-        //友盟
-        PushAgent mPushAgent = PushAgent.getInstance(this);
-        mPushAgent.enable();
-
-        //开启推送并设置注册的回调处理
-        mPushAgent.enable(new IUmengRegisterCallback() {
-            @Override
-            public void onRegistered(final String registrationId) {
-                //handler.post(r)。r是要执行的任务代码。意思就是说r的代码实际是在UI线程执行的。可以写更新UI的代码。
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //onRegistered方法的参数registrationId即是device_token
-                        DebugLog.e(DebugLog.TAG, "友盟推送 device_token:" + registrationId);
-                    }
-                });
-            }
-        });
     }
 
     @Override

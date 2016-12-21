@@ -16,13 +16,9 @@ public interface BaseResponseListener<T> {
      */
     void OnRequestSuccess(T t);
 
-    /**
-     * 接口反馈错误
-     */
-    void OnRequestInterfaceError(String errorMsg);
 
     /**
      * 其他类型错误
      */
-    void OnRequestOtherError(Exception error);
+    void OnRequestError(Exception error);
 }

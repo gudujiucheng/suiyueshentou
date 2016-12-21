@@ -3,6 +3,7 @@
     package="com.suiyueshentou">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".base.MyApplication"
@@ -44,14 +45,6 @@
                 android:resource="@xml/accessible_service_config" />
         </service>
 
-        <!-- 友盟推送 开始 -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="576c972367e58e9c380004c9" />
-        <meta-data
-            android:name="UMENG_MESSAGE_SECRET"
-            android:value="47d8b84815bce7058b76c31cffbd6f19" />
-        <!-- 友盟推送 结束 -->
 
     </application>
 
